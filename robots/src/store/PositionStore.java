@@ -44,7 +44,7 @@ public class PositionStore {
             String line = bufferedReader.readLine();
             while (line != null) {
                 String[] parameters = line.split(": ");
-                if (parameters[0].equals("Name")) {
+                if (parameters[0].equals("name")) {
                     extractOneWindowPosition(bufferedReader, parameters[1]);
                     line = bufferedReader.readLine();
                 }
@@ -56,7 +56,7 @@ public class PositionStore {
         List<String> windowData = new ArrayList<>();
         windowData.add(name);
         String line = reader.readLine();
-        while (!line.equals("\n")) {
+        while (!line.equals("")) {
             windowData.add(line.split(": ")[1]);
             line = reader.readLine();
         }
@@ -65,21 +65,21 @@ public class PositionStore {
                         windowData.get(0),
                         Integer.parseInt(windowData.get(1)),
                         Integer.parseInt(windowData.get(2)),
-                        windowData.get(3).equals("true"),
-                        Float.parseFloat(windowData.get(4)),
-                        Float.parseFloat(windowData.get(5))
+                        windowData.get(5).equals("true"),
+                        Float.parseFloat(windowData.get(3)),
+                        Float.parseFloat(windowData.get(4))
                 ));
     }
 
     private void writePosition(Storable frame, Writer writer) throws IOException {
         WindowPosition frameInfo = frame.getDataForStore();
         String toWrite = String.format(
-                "%s: %s\n%s: %d\n%s: %d\n%s: %f\n%s: %f\n%s: %b\n\n",
+                "%s: %s\n%s: %d\n%s: %d\n%s: %d\n%s: %d\n%s: %b\n\n",
                 "name", frameInfo.getName(),
                 "height", frameInfo.getHeight(),
                 "width", frameInfo.getWidth(),
-                "x", frameInfo.getAlignmentX(),
-                "y", frameInfo.getAlignmentY(),
+                "x", frameInfo.getX(),
+                "y", frameInfo.getY(),
                 "isHide", frameInfo.isHide()
         );
         writer.append(toWrite);

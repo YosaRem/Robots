@@ -29,8 +29,6 @@ public class MainApplicationFrame extends JFrame
     private final String windowName = "mainWindow";
     
     public MainApplicationFrame() {
-        //Make the big window be indented 50 pixels from each edge
-        //of the screen.
         int inset = 50;        
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setBounds(inset, inset,
@@ -45,7 +43,8 @@ public class MainApplicationFrame extends JFrame
 
 
         GameWindow gameWindow = new GameWindow();
-        gameWindow.setSize(400,  400);
+        gameWindow.restoreOrDefault(store.getStoredData(),
+                new WindowPosition(gameWindow.windowName, 400, 400, false, 400, 400));
         addWindow(gameWindow);
         store.addToStore(gameWindow);
 
@@ -90,9 +89,11 @@ public class MainApplicationFrame extends JFrame
     protected LogWindow createLogWindow()
     {
         LogWindow logWindow = new LogWindow(Logger.getDefaultLogSource());
-        logWindow.setLocation(10,10);
-        logWindow.setSize(300, 800);
-        setMinimumSize(logWindow.getSize());
+        logWindow.restoreOrDefault(store.getStoredData(), new WindowPosition(
+                logWindow.windowName,
+                200, 200, false, 10, 10
+        ));
+        logWindow.setMinimumSize(logWindow.getSize());
         logWindow.pack();
         Logger.debug("Протокол работает");
         return logWindow;

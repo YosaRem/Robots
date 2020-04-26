@@ -1,8 +1,7 @@
 package gui;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-import java.awt.TextArea;
+import java.awt.*;
+import java.beans.PropertyVetoException;
 import java.util.AbstractMap;
 import java.util.Map;
 
@@ -13,6 +12,7 @@ import log.LogChangeListener;
 import log.LogEntry;
 import log.LogWindowSource;
 import store.Restorable;
+import store.Restorer;
 import store.Storable;
 import store.WindowPosition;
 
@@ -20,7 +20,7 @@ public class LogWindow extends JInternalFrame implements LogChangeListener, Stor
 {
     private LogWindowSource m_logSource;
     private TextArea m_logContent;
-    private String windowName = "GameWindow";
+    public String windowName = "LogWindow";
 
     public LogWindow(LogWindowSource logSource) 
     {
@@ -55,8 +55,21 @@ public class LogWindow extends JInternalFrame implements LogChangeListener, Stor
     }
 
     @Override
-    public void useStoreDataForRestore(Map<String, WindowPosition> store) {
+    public void restoreOrDefault(Map<String, WindowPosition> store, WindowPosition defaultPosition) {
+        restore(store.getOrDefault(windowName, defaultPosition));
+    }
 
+    private void restore(WindowPosition data) {
+        Dimension size = new Dimension();
+        size.width = data.getWidth();
+        size.height = data.getHeight();
+        m_logContent.setSize(size);
+        this.setSize(size);
+        try {
+            this.setIcon(data.isHide());
+        } catch (PropertyVetoException ignored) {}
+        this.setLocation(data.getX(), data.getY());
+        this.setVisible(true);
     }
 
     @Override
@@ -66,8 +79,8 @@ public class LogWindow extends JInternalFrame implements LogChangeListener, Stor
                 this.getSize().width,
                 this.getSize().height,
                 this.isIcon,
-                this.getHeight(),
-                this.getWidth()
+                this.getLocation().x,
+                this.getLocation().y
         );
         return position;
     }

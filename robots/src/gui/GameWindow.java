@@ -1,10 +1,12 @@
 package gui;
 
 import store.Restorable;
+import store.Restorer;
 import store.Storable;
 import store.WindowPosition;
 
-import java.awt.BorderLayout;
+import java.awt.*;
+import java.beans.PropertyVetoException;
 import java.util.Map;
 
 import javax.swing.JInternalFrame;
@@ -13,7 +15,7 @@ import javax.swing.JPanel;
 public class GameWindow extends JInternalFrame implements Storable, Restorable
 {
     private final GameVisualizer m_visualizer;
-    private final String windowName = "GameWindow";
+    public final String windowName = "GameWindow";
 
     public GameWindow() 
     {
@@ -26,8 +28,8 @@ public class GameWindow extends JInternalFrame implements Storable, Restorable
     }
 
     @Override
-    public void useStoreDataForRestore(Map<String, WindowPosition> store) {
-
+    public void restoreOrDefault(Map<String, WindowPosition> store, WindowPosition defaultPosition) {
+        Restorer.restoreInternalFrame(this, store.getOrDefault(windowName, defaultPosition));
     }
 
     @Override
@@ -37,8 +39,8 @@ public class GameWindow extends JInternalFrame implements Storable, Restorable
                 this.getSize().width,
                 this.getSize().height,
                 this.isIcon,
-                this.getHeight(),
-                this.getWidth()
+                this.getLocation().x,
+                this.getLocation().y
         );
     }
 }

@@ -5,17 +5,17 @@ public class WindowPosition {
     private int width;
     private int height;
     private boolean isHide;
-    private float alignmentX;
-    private float alignmentY;
+    private int X;
+    private int Y;
 
     public WindowPosition(String name, int width, int height,
-                          boolean isHide, float alignmentX, float alignmentY) {
+                          boolean isHide, float X, float Y) {
         this.name = name;
         this.height = height;
         this.width = width;
         this.isHide = isHide;
-        this.alignmentX = alignmentX;
-        this.alignmentY = alignmentY;
+        this.X = (int) X;
+        this.Y = (int) Y;
     }
 
     public int getHeight() {
@@ -34,11 +34,11 @@ public class WindowPosition {
         return name;
     }
 
-    public float getAlignmentX() {
-        return alignmentX;
+    public int getX() {
+        return X;
     }
 
-    public float getAlignmentY() {
-        return alignmentY;
+    public int getY() {
+        return Y;
     }
 }

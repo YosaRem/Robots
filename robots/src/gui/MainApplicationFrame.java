@@ -4,11 +4,15 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOError;
+import java.io.IOException;
 
 import javax.swing.*;
+import javax.swing.text.Position;
 import javax.swing.text.html.Option;
 
 import log.Logger;
+import store.PositionStore;
 
 /**
  * Что требуется сделать:
@@ -31,9 +35,9 @@ public class MainApplicationFrame extends JFrame
 
         setContentPane(desktopPane);
         
-        
         LogWindow logWindow = createLogWindow();
         addWindow(logWindow);
+
 
         GameWindow gameWindow = new GameWindow();
         gameWindow.setSize(400,  400);
@@ -62,7 +66,17 @@ public class MainApplicationFrame extends JFrame
                         options[0]
                 );
                 if (result == 0) {
+                    PositionStore store = new PositionStore(System.getProperty("user.home"));
+                    try {
+                        store.storePosition(Window.getWindows());
+                    } catch (IOException exc) {
+                        JOptionPane.showMessageDialog(
+                                desktopPane,
+                                "Во время сохранения данных произошла ошибка."
+                        );
+                    }
                     setDefaultCloseOperation(EXIT_ON_CLOSE);
+
                 }
             }
         };

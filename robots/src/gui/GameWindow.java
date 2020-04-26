@@ -6,7 +6,6 @@ import store.Storable;
 import store.WindowPosition;
 
 import java.awt.*;
-import java.beans.PropertyVetoException;
 import java.util.Map;
 
 import javax.swing.JInternalFrame;

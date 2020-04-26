@@ -2,7 +2,6 @@ package gui;
 
 import java.awt.*;
 import java.beans.PropertyVetoException;
-import java.util.AbstractMap;
 import java.util.Map;
 
 import javax.swing.JInternalFrame;
@@ -12,7 +11,6 @@ import log.LogChangeListener;
 import log.LogEntry;
 import log.LogWindowSource;
 import store.Restorable;
-import store.Restorer;
 import store.Storable;
 import store.WindowPosition;
 

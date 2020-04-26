@@ -13,6 +13,8 @@ import javax.swing.text.html.Option;
 
 import log.Logger;
 import store.PositionStore;
+import store.Storable;
+import store.WindowPosition;
 
 /**
  * Что требуется сделать:
@@ -23,6 +25,8 @@ import store.PositionStore;
 public class MainApplicationFrame extends JFrame
 {
     private final JDesktopPane desktopPane = new JDesktopPane();
+    private final PositionStore store = new PositionStore(System.getProperty("user.home"));
+    private final String windowName = "mainWindow";
     
     public MainApplicationFrame() {
         //Make the big window be indented 50 pixels from each edge
@@ -34,18 +38,20 @@ public class MainApplicationFrame extends JFrame
             screenSize.height - inset*2);
 
         setContentPane(desktopPane);
-        
+
         LogWindow logWindow = createLogWindow();
         addWindow(logWindow);
+        store.addToStore(logWindow);
 
 
         GameWindow gameWindow = new GameWindow();
         gameWindow.setSize(400,  400);
         addWindow(gameWindow);
-
+        store.addToStore(gameWindow);
 
 
         addWindowListener(initExitListener());
+
         setJMenuBar(generateMenuBar());
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     }
@@ -66,9 +72,8 @@ public class MainApplicationFrame extends JFrame
                         options[0]
                 );
                 if (result == 0) {
-                    PositionStore store = new PositionStore(System.getProperty("user.home"));
                     try {
-                        store.storePosition(Window.getWindows());
+                        store.storePositions();
                     } catch (IOException exc) {
                         JOptionPane.showMessageDialog(
                                 desktopPane,

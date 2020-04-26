@@ -3,6 +3,8 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.TextArea;
+import java.util.AbstractMap;
+import java.util.Map;
 
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
@@ -10,11 +12,15 @@ import javax.swing.JPanel;
 import log.LogChangeListener;
 import log.LogEntry;
 import log.LogWindowSource;
+import store.Restorable;
+import store.Storable;
+import store.WindowPosition;
 
-public class LogWindow extends JInternalFrame implements LogChangeListener
+public class LogWindow extends JInternalFrame implements LogChangeListener, Storable, Restorable
 {
     private LogWindowSource m_logSource;
     private TextArea m_logContent;
+    private String windowName = "GameWindow";
 
     public LogWindow(LogWindowSource logSource) 
     {
@@ -46,5 +52,23 @@ public class LogWindow extends JInternalFrame implements LogChangeListener
     public void onLogChanged()
     {
         EventQueue.invokeLater(this::updateLogContent);
+    }
+
+    @Override
+    public void useStoreDataForRestore(Map<String, WindowPosition> store) {
+
+    }
+
+    @Override
+    public WindowPosition getDataForStore() {
+        final WindowPosition position = new WindowPosition(
+                windowName,
+                this.getSize().width,
+                this.getSize().height,
+                this.isIcon,
+                this.getHeight(),
+                this.getWidth()
+        );
+        return position;
     }
 }

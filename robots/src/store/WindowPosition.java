@@ -1,21 +1,21 @@
 package store;
 
 public class WindowPosition {
-    private String name;
-    private int width;
-    private int height;
-    private boolean isHide;
-    private int X;
-    private int Y;
+    private final String name;
+    private final int width;
+    private final int height;
+    private final boolean isHide;
+    private final int x;
+    private final int y;
 
     public WindowPosition(String name, int width, int height,
-                          boolean isHide, float X, float Y) {
+                          boolean isHide, float x, float y) {
         this.name = name;
         this.height = height;
         this.width = width;
         this.isHide = isHide;
-        this.X = (int) X;
-        this.Y = (int) Y;
+        this.x = (int) x;
+        this.y = (int) y;
     }
 
     public int getHeight() {
@@ -35,10 +35,10 @@ public class WindowPosition {
     }
 
     public int getX() {
-        return X;
+        return x;
     }
 
     public int getY() {
-        return Y;
+        return y;
     }
 }

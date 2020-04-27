@@ -5,12 +5,13 @@ import java.util.*;
 import java.util.List;
 
 public class PositionStore {
-    private File positionFile;
-    private List<Storable> toStore = new ArrayList<>();
-    private Map<String, WindowPosition> data;
+    private final File positionFile;
+    private final List<Storable> toStore;
+    private final Map<String, WindowPosition> data;
 
     public PositionStore(String homeDir) {
         positionFile = new File(homeDir, "positions.txt");
+        toStore = new ArrayList<>();
         data = new HashMap<>();
         getWindowsPositions();
     }

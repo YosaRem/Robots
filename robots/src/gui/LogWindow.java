@@ -16,7 +16,7 @@ import store.WindowPosition;
 public class LogWindow extends JInternalFrame implements LogChangeListener, Storable {
     private LogWindowSource m_logSource;
     private TextArea m_logContent;
-    public String windowName = "LogWindow";
+    public static String windowName = "LogWindow";
 
     public LogWindow(LogWindowSource logSource) 
     {

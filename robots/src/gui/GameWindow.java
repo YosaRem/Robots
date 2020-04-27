@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 
 public class GameWindow extends JInternalFrame implements Storable {
     private final GameVisualizer m_visualizer;
-    public final String windowName = "GameWindow";
+    public static final String windowName = "GameWindow";
 
     public GameWindow() 
     {

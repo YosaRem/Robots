@@ -26,7 +26,6 @@ public class MainApplicationFrame extends JFrame
 {
     private final JDesktopPane desktopPane = new JDesktopPane();
     private final PositionStore store = new PositionStore(System.getProperty("user.home"));
-    private final String windowName = "mainWindow";
     
     public MainApplicationFrame() {
         int inset = 50;        

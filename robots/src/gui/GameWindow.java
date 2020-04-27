@@ -1,6 +1,5 @@
 package gui;
 
-import store.Restorable;
 import store.Restorer;
 import store.Storable;
 import store.WindowPosition;
@@ -11,8 +10,7 @@ import java.util.Map;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 
-public class GameWindow extends JInternalFrame implements Storable, Restorable
-{
+public class GameWindow extends JInternalFrame implements Storable {
     private final GameVisualizer m_visualizer;
     public final String windowName = "GameWindow";
 

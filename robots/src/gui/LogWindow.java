@@ -10,12 +10,10 @@ import javax.swing.JPanel;
 import log.LogChangeListener;
 import log.LogEntry;
 import log.LogWindowSource;
-import store.Restorable;
 import store.Storable;
 import store.WindowPosition;
 
-public class LogWindow extends JInternalFrame implements LogChangeListener, Storable, Restorable
-{
+public class LogWindow extends JInternalFrame implements LogChangeListener, Storable {
     private LogWindowSource m_logSource;
     private TextArea m_logContent;
     public String windowName = "LogWindow";

@@ -4,28 +4,22 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.IOError;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.*;
-import javax.swing.text.Position;
-import javax.swing.text.html.Option;
 
 import log.Logger;
+import store.HaveStorableFrames;
 import store.PositionStore;
 import store.Storable;
 import store.WindowPosition;
 
-/**
- * Что требуется сделать:
- * 1. Метод создания меню перегружен функционалом и трудно читается. 
- * Следует разделить его на серию более простых методов (или вообще выделить отдельный класс).
- *
- */
-public class MainApplicationFrame extends JFrame
+public class MainApplicationFrame extends JFrame implements HaveStorableFrames
 {
     private final JDesktopPane desktopPane = new JDesktopPane();
-    private final PositionStore store = new PositionStore(System.getProperty("user.home"));
     
     public MainApplicationFrame() {
         int inset = 50;        
@@ -38,14 +32,9 @@ public class MainApplicationFrame extends JFrame
 
         LogWindow logWindow = createLogWindow();
         addWindow(logWindow);
-        store.addToStore(logWindow);
-
 
         GameWindow gameWindow = new GameWindow();
-        gameWindow.restoreOrDefault(store.getStoredData(),
-                new WindowPosition(gameWindow.windowName, 400, 400, false, 400, 400));
         addWindow(gameWindow);
-        store.addToStore(gameWindow);
 
 
         addWindowListener(initExitListener());
@@ -55,6 +44,7 @@ public class MainApplicationFrame extends JFrame
     }
 
     protected WindowAdapter initExitListener() {
+        HaveStorableFrames frame = this;
         return new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -71,6 +61,7 @@ public class MainApplicationFrame extends JFrame
                 );
                 if (result == 0) {
                     try {
+                        PositionStore store = new PositionStore(frame, System.getProperty("user.home"));
                         store.storePositions();
                     } catch (IOException exc) {
                         JOptionPane.showMessageDialog(
@@ -79,7 +70,6 @@ public class MainApplicationFrame extends JFrame
                         );
                     }
                     setDefaultCloseOperation(EXIT_ON_CLOSE);
-
                 }
             }
         };
@@ -88,10 +78,6 @@ public class MainApplicationFrame extends JFrame
     protected LogWindow createLogWindow()
     {
         LogWindow logWindow = new LogWindow(Logger.getDefaultLogSource());
-        logWindow.restoreOrDefault(store.getStoredData(), new WindowPosition(
-                logWindow.windowName,
-                200, 200, false, 10, 10
-        ));
         logWindow.setMinimumSize(logWindow.getSize());
         logWindow.pack();
         Logger.debug("Протокол работает");
@@ -201,6 +187,27 @@ public class MainApplicationFrame extends JFrame
             | IllegalAccessException | UnsupportedLookAndFeelException e)
         {
             // just ignore
+        }
+    }
+
+    @Override
+    public List<Storable> getDataForStore() {
+        JInternalFrame[] allFrames = desktopPane.getAllFrames();
+        List<Storable> toStore = new ArrayList<>();
+        for (JInternalFrame frame: allFrames) {
+            if (frame instanceof Storable) {
+                toStore.add((Storable) frame);
+            }
+        }
+        return toStore;
+    }
+
+    @Override
+    public void restore(PositionStore store) {
+        Map<String, WindowPosition> data = store.getStoredData();
+        List<Storable> framesToRestore = getDataForStore();
+        for (Storable frame: framesToRestore) {
+            frame.restore(data);
         }
     }
 }

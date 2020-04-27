@@ -9,15 +9,11 @@ public class PositionStore {
     private final List<Storable> toStore;
     private final Map<String, WindowPosition> data;
 
-    public PositionStore(String homeDir) {
+    public PositionStore(HaveStorableFrames frame, String homeDir) {
         positionFile = new File(homeDir, "positions.txt");
-        toStore = new ArrayList<>();
+        toStore = frame.getDataForStore();
         data = new HashMap<>();
         getWindowsPositions();
-    }
-
-    public void addToStore(Storable toStore) {
-        this.toStore.add(toStore);
     }
 
     public void storePositions() throws IOException {
@@ -38,7 +34,6 @@ public class PositionStore {
     }
 
     private void getWindowsPositions() {
-        Map<String, WindowPosition> data = new HashMap<>();
         try {
             FileReader reader = new FileReader(positionFile);
             BufferedReader bufferedReader = new BufferedReader(reader);
@@ -50,7 +45,7 @@ public class PositionStore {
                     line = bufferedReader.readLine();
                 }
             }
-        } catch (IOException e) { data = new HashMap<>(); }
+        } catch (IOException e) { data.clear(); }
     }
 
     private void extractOneWindowPosition(BufferedReader reader, String name) throws IOException {

@@ -51,8 +51,10 @@ public class LogWindow extends JInternalFrame implements LogChangeListener, Stor
     }
 
     @Override
-    public void restoreOrDefault(Map<String, WindowPosition> store, WindowPosition defaultPosition) {
-        restore(store.getOrDefault(windowName, defaultPosition));
+    public void restore(Map<String, WindowPosition> store) {
+        if (store.containsKey(windowName)) {
+            restore(store.get(windowName));
+        }
     }
 
     private void restore(WindowPosition data) {

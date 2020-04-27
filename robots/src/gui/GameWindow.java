@@ -25,8 +25,10 @@ public class GameWindow extends JInternalFrame implements Storable {
     }
 
     @Override
-    public void restoreOrDefault(Map<String, WindowPosition> store, WindowPosition defaultPosition) {
-        Restorer.restoreInternalFrame(this, store.getOrDefault(windowName, defaultPosition));
+    public void restore(Map<String, WindowPosition> store) {
+        if (store.containsKey(windowName)) {
+            Restorer.restoreInternalFrame(this, store.get(windowName));
+        }
     }
 
     @Override

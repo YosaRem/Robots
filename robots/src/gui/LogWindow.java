@@ -70,7 +70,7 @@ public class LogWindow extends JInternalFrame implements LogChangeListener, Stor
 
     @Override
     public WindowPosition getDataForStore() {
-        final WindowPosition position = new WindowPosition(
+        return new WindowPosition(
                 windowName,
                 this.getSize().width,
                 this.getSize().height,
@@ -78,6 +78,5 @@ public class LogWindow extends JInternalFrame implements LogChangeListener, Stor
                 this.getLocation().x,
                 this.getLocation().y
         );
-        return position;
     }
 }

@@ -3,6 +3,6 @@ package store;
 import java.util.List;
 
 public interface HaveStorableFrames {
-    List<Storable> getDataForStore();
+    List<HasState> getDataForStore();
     void restore(PositionStore store);
 }

@@ -14,7 +14,7 @@ import javax.swing.*;
 import log.Logger;
 import store.HaveStorableFrames;
 import store.PositionStore;
-import store.Storable;
+import store.HasState;
 import store.WindowState;
 
 public class MainApplicationFrame extends JFrame implements HaveStorableFrames
@@ -44,7 +44,6 @@ public class MainApplicationFrame extends JFrame implements HaveStorableFrames
     }
 
     protected WindowAdapter initExitListener() {
-        HaveStorableFrames frame = this;
         return new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -61,7 +60,7 @@ public class MainApplicationFrame extends JFrame implements HaveStorableFrames
                 );
                 if (result == 0) {
                     try {
-                        PositionStore store = new PositionStore(frame, System.getProperty("user.home"));
+                        PositionStore store = new PositionStore(MainApplicationFrame.this, System.getProperty("user.home"));
                         store.storePositions();
                     } catch (IOException exc) {
                         JOptionPane.showMessageDialog(
@@ -191,12 +190,12 @@ public class MainApplicationFrame extends JFrame implements HaveStorableFrames
     }
 
     @Override
-    public List<Storable> getDataForStore() {
+    public List<HasState> getDataForStore() {
         JInternalFrame[] allFrames = desktopPane.getAllFrames();
-        List<Storable> toStore = new ArrayList<>();
+        List<HasState> toStore = new ArrayList<>();
         for (JInternalFrame frame: allFrames) {
-            if (frame instanceof Storable) {
-                toStore.add((Storable) frame);
+            if (frame instanceof HasState) {
+                toStore.add((HasState) frame);
             }
         }
         return toStore;
@@ -205,9 +204,9 @@ public class MainApplicationFrame extends JFrame implements HaveStorableFrames
     @Override
     public void restore(PositionStore store) {
         Map<String, WindowState> data = store.getStoredData();
-        List<Storable> framesToRestore = getDataForStore();
-        for (Storable frame: framesToRestore) {
-            frame.restore(data);
+        List<HasState> framesToRestore = getDataForStore();
+        for (HasState frame: framesToRestore) {
+            frame.setState(data);
         }
     }
 }

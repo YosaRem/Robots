@@ -10,10 +10,10 @@ import javax.swing.JPanel;
 import log.LogChangeListener;
 import log.LogEntry;
 import log.LogWindowSource;
-import store.Storable;
+import store.HasState;
 import store.WindowState;
 
-public class LogWindow extends JInternalFrame implements LogChangeListener, Storable {
+public class LogWindow extends JInternalFrame implements LogChangeListener, HasState {
     private LogWindowSource m_logSource;
     private TextArea m_logContent;
     public static final String WINDOW_NAME = "LogWindow";
@@ -51,7 +51,7 @@ public class LogWindow extends JInternalFrame implements LogChangeListener, Stor
     }
 
     @Override
-    public void restore(Map<String, WindowState> store) {
+    public void setState(Map<String, WindowState> store) {
         if (store.containsKey(WINDOW_NAME)) {
             WindowState data = store.get(WINDOW_NAME);
             Dimension size = new Dimension();
@@ -68,7 +68,7 @@ public class LogWindow extends JInternalFrame implements LogChangeListener, Stor
     }
 
     @Override
-    public WindowState getDataForStore() {
+    public WindowState getState() {
         return new WindowState(
                 WINDOW_NAME,
                 this.getSize().width,

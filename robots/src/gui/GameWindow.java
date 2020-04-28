@@ -1,6 +1,6 @@
 package gui;
 
-import store.Storable;
+import store.HasState;
 import store.WindowState;
 
 import java.awt.*;
@@ -10,7 +10,7 @@ import java.util.Map;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 
-public class GameWindow extends JInternalFrame implements Storable {
+public class GameWindow extends JInternalFrame implements HasState {
     private final GameVisualizer m_visualizer;
     public static final String WINDOW_NAME = "GameWindow";
 
@@ -25,7 +25,7 @@ public class GameWindow extends JInternalFrame implements Storable {
     }
 
     @Override
-    public void restore(Map<String, WindowState> store) {
+    public void setState(Map<String, WindowState> store) {
         if (store.containsKey(WINDOW_NAME)) {
             WindowState data = store.get(WINDOW_NAME);
             Dimension size = new Dimension();
@@ -41,7 +41,7 @@ public class GameWindow extends JInternalFrame implements Storable {
     }
 
     @Override
-    public WindowState getDataForStore() {
+    public WindowState getState() {
         return new WindowState(
                 WINDOW_NAME,
                 this.getSize().width,

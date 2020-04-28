@@ -6,7 +6,7 @@ import java.util.List;
 
 public class PositionStore {
     private final File positionFile;
-    private final List<Storable> toStore;
+    private final List<HasState> toStore;
     private final Map<String, WindowState> data;
 
     public PositionStore(HaveStorableFrames frame, String homeDir) {
@@ -19,7 +19,7 @@ public class PositionStore {
     public void storePositions() throws IOException {
         FileWriter writer = new FileWriter(positionFile);
         try {
-            for (Storable frame : toStore) {
+            for (HasState frame : toStore) {
                 writePosition(frame, writer);
             }
         } catch (IOException e) {
@@ -67,8 +67,8 @@ public class PositionStore {
                 ));
     }
 
-    private void writePosition(Storable frame, Writer writer) throws IOException {
-        WindowState frameInfo = frame.getDataForStore();
+    private void writePosition(HasState frame, Writer writer) throws IOException {
+        WindowState frameInfo = frame.getState();
         String toWrite = String.format(
                 "%s: %s\n%s: %d\n%s: %d\n%s: %d\n%s: %d\n%s: %b\n\n",
                 "name", frameInfo.getName(),

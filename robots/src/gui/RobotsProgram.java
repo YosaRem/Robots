@@ -1,5 +1,7 @@
 package gui;
 
+import store.PositionStore;
+
 import java.awt.Frame;
 
 import javax.swing.SwingUtilities;
@@ -19,6 +21,7 @@ public class RobotsProgram
       SwingUtilities.invokeLater(() -> {
         MainApplicationFrame frame = new MainApplicationFrame();
         frame.pack();
+        frame.restore(new PositionStore(frame, System.getProperty("user.home")));
         frame.setVisible(true);
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);
       });

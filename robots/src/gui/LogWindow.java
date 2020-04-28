@@ -1,8 +1,8 @@
 package gui;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-import java.awt.TextArea;
+import java.awt.*;
+import java.beans.PropertyVetoException;
+import java.util.Map;
 
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
@@ -10,11 +10,13 @@ import javax.swing.JPanel;
 import log.LogChangeListener;
 import log.LogEntry;
 import log.LogWindowSource;
+import store.HasState;
+import store.WindowState;
 
-public class LogWindow extends JInternalFrame implements LogChangeListener
-{
+public class LogWindow extends JInternalFrame implements LogChangeListener, HasState {
     private LogWindowSource m_logSource;
     private TextArea m_logContent;
+    public static final String WINDOW_NAME = "LogWindow";
 
     public LogWindow(LogWindowSource logSource) 
     {
@@ -46,5 +48,34 @@ public class LogWindow extends JInternalFrame implements LogChangeListener
     public void onLogChanged()
     {
         EventQueue.invokeLater(this::updateLogContent);
+    }
+
+    @Override
+    public void setState(Map<String, WindowState> store) {
+        if (store.containsKey(WINDOW_NAME)) {
+            WindowState data = store.get(WINDOW_NAME);
+            Dimension size = new Dimension();
+            size.width = data.getWidth();
+            size.height = data.getHeight();
+            m_logContent.setSize(size);
+            this.setSize(size);
+            try {
+                this.setIcon(data.isHide());
+            } catch (PropertyVetoException ignored) {}
+            this.setLocation(data.getX(), data.getY());
+            this.setVisible(true);
+        }
+    }
+
+    @Override
+    public WindowState getState() {
+        return new WindowState(
+                WINDOW_NAME,
+                this.getSize().width,
+                this.getSize().height,
+                this.isIcon,
+                this.getLocation().x,
+                this.getLocation().y
+        );
     }
 }

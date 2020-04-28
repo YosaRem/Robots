@@ -4,25 +4,24 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.*;
-import javax.swing.text.html.Option;
 
 import log.Logger;
+import store.HaveStorableFrames;
+import store.PositionStore;
+import store.HasState;
+import store.WindowState;
 
-/**
- * Что требуется сделать:
- * 1. Метод создания меню перегружен функционалом и трудно читается. 
- * Следует разделить его на серию более простых методов (или вообще выделить отдельный класс).
- *
- */
-public class MainApplicationFrame extends JFrame
+public class MainApplicationFrame extends JFrame implements HaveStorableFrames
 {
     private final JDesktopPane desktopPane = new JDesktopPane();
     
     public MainApplicationFrame() {
-        //Make the big window be indented 50 pixels from each edge
-        //of the screen.
         int inset = 50;        
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setBounds(inset, inset,
@@ -30,18 +29,16 @@ public class MainApplicationFrame extends JFrame
             screenSize.height - inset*2);
 
         setContentPane(desktopPane);
-        
-        
+
         LogWindow logWindow = createLogWindow();
         addWindow(logWindow);
 
         GameWindow gameWindow = new GameWindow();
-        gameWindow.setSize(400,  400);
         addWindow(gameWindow);
 
 
-
         addWindowListener(initExitListener());
+
         setJMenuBar(generateMenuBar());
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     }
@@ -62,6 +59,15 @@ public class MainApplicationFrame extends JFrame
                         options[0]
                 );
                 if (result == 0) {
+                    try {
+                        PositionStore store = new PositionStore(MainApplicationFrame.this, System.getProperty("user.home"));
+                        store.storePositions();
+                    } catch (IOException exc) {
+                        JOptionPane.showMessageDialog(
+                                desktopPane,
+                                "Во время сохранения данных произошла ошибка."
+                        );
+                    }
                     setDefaultCloseOperation(EXIT_ON_CLOSE);
                 }
             }
@@ -71,9 +77,7 @@ public class MainApplicationFrame extends JFrame
     protected LogWindow createLogWindow()
     {
         LogWindow logWindow = new LogWindow(Logger.getDefaultLogSource());
-        logWindow.setLocation(10,10);
-        logWindow.setSize(300, 800);
-        setMinimumSize(logWindow.getSize());
+        logWindow.setMinimumSize(logWindow.getSize());
         logWindow.pack();
         Logger.debug("Протокол работает");
         return logWindow;
@@ -182,6 +186,27 @@ public class MainApplicationFrame extends JFrame
             | IllegalAccessException | UnsupportedLookAndFeelException e)
         {
             // just ignore
+        }
+    }
+
+    @Override
+    public List<HasState> getDataForStore() {
+        JInternalFrame[] allFrames = desktopPane.getAllFrames();
+        List<HasState> toStore = new ArrayList<>();
+        for (JInternalFrame frame: allFrames) {
+            if (frame instanceof HasState) {
+                toStore.add((HasState) frame);
+            }
+        }
+        return toStore;
+    }
+
+    @Override
+    public void restore(PositionStore store) {
+        Map<String, WindowState> data = store.getStoredData();
+        List<HasState> framesToRestore = getDataForStore();
+        for (HasState frame: framesToRestore) {
+            frame.setState(data);
         }
     }
 }

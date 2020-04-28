@@ -17,16 +17,11 @@ public class PositionStore {
     }
 
     public void storePositions() throws IOException {
-        FileWriter writer = new FileWriter(positionFile);
-        try {
+        try (FileWriter writer = new FileWriter(positionFile)) {
             for (HasState frame : toStore) {
                 writePosition(frame, writer);
             }
-        } catch (IOException e) {
-            writer.close();
-            throw e;
         }
-        writer.close();
     }
 
     public Map<String, WindowState> getStoredData() {
@@ -34,9 +29,7 @@ public class PositionStore {
     }
 
     private void getWindowsPositions() {
-        try {
-            FileReader reader = new FileReader(positionFile);
-            BufferedReader bufferedReader = new BufferedReader(reader);
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(positionFile))){
             String line = bufferedReader.readLine();
             while (line != null) {
                 String[] parameters = line.split(": ");

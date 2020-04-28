@@ -15,7 +15,7 @@ import log.Logger;
 import store.HaveStorableFrames;
 import store.PositionStore;
 import store.Storable;
-import store.WindowPosition;
+import store.WindowState;
 
 public class MainApplicationFrame extends JFrame implements HaveStorableFrames
 {
@@ -204,7 +204,7 @@ public class MainApplicationFrame extends JFrame implements HaveStorableFrames
 
     @Override
     public void restore(PositionStore store) {
-        Map<String, WindowPosition> data = store.getStoredData();
+        Map<String, WindowState> data = store.getStoredData();
         List<Storable> framesToRestore = getDataForStore();
         for (Storable frame: framesToRestore) {
             frame.restore(data);

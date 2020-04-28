@@ -11,7 +11,7 @@ import log.LogChangeListener;
 import log.LogEntry;
 import log.LogWindowSource;
 import store.Storable;
-import store.WindowPosition;
+import store.WindowState;
 
 public class LogWindow extends JInternalFrame implements LogChangeListener, Storable {
     private LogWindowSource m_logSource;
@@ -51,9 +51,9 @@ public class LogWindow extends JInternalFrame implements LogChangeListener, Stor
     }
 
     @Override
-    public void restore(Map<String, WindowPosition> store) {
+    public void restore(Map<String, WindowState> store) {
         if (store.containsKey(WINDOW_NAME)) {
-            WindowPosition data = store.get(WINDOW_NAME);
+            WindowState data = store.get(WINDOW_NAME);
             Dimension size = new Dimension();
             size.width = data.getWidth();
             size.height = data.getHeight();
@@ -68,8 +68,8 @@ public class LogWindow extends JInternalFrame implements LogChangeListener, Stor
     }
 
     @Override
-    public WindowPosition getDataForStore() {
-        return new WindowPosition(
+    public WindowState getDataForStore() {
+        return new WindowState(
                 WINDOW_NAME,
                 this.getSize().width,
                 this.getSize().height,

@@ -1,6 +1,6 @@
 package store;
 
-public class WindowPosition {
+public class WindowState {
     private final String name;
     private final int width;
     private final int height;
@@ -8,8 +8,8 @@ public class WindowPosition {
     private final int x;
     private final int y;
 
-    public WindowPosition(String name, int width, int height,
-                          boolean isHide, float x, float y) {
+    public WindowState(String name, int width, int height,
+                       boolean isHide, float x, float y) {
         this.name = name;
         this.height = height;
         this.width = width;

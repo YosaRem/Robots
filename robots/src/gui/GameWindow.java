@@ -1,7 +1,7 @@
 package gui;
 
 import store.Storable;
-import store.WindowPosition;
+import store.WindowState;
 
 import java.awt.*;
 import java.beans.PropertyVetoException;
@@ -25,9 +25,9 @@ public class GameWindow extends JInternalFrame implements Storable {
     }
 
     @Override
-    public void restore(Map<String, WindowPosition> store) {
+    public void restore(Map<String, WindowState> store) {
         if (store.containsKey(WINDOW_NAME)) {
-            WindowPosition data = store.get(WINDOW_NAME);
+            WindowState data = store.get(WINDOW_NAME);
             Dimension size = new Dimension();
             size.width = data.getWidth();
             size.height = data.getHeight();
@@ -41,8 +41,8 @@ public class GameWindow extends JInternalFrame implements Storable {
     }
 
     @Override
-    public WindowPosition getDataForStore() {
-        return new WindowPosition(
+    public WindowState getDataForStore() {
+        return new WindowState(
                 WINDOW_NAME,
                 this.getSize().width,
                 this.getSize().height,

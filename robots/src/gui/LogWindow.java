@@ -16,7 +16,7 @@ import store.WindowPosition;
 public class LogWindow extends JInternalFrame implements LogChangeListener, Storable {
     private LogWindowSource m_logSource;
     private TextArea m_logContent;
-    public static String windowName = "LogWindow";
+    public static final String WINDOW_NAME = "LogWindow";
 
     public LogWindow(LogWindowSource logSource) 
     {
@@ -52,28 +52,25 @@ public class LogWindow extends JInternalFrame implements LogChangeListener, Stor
 
     @Override
     public void restore(Map<String, WindowPosition> store) {
-        if (store.containsKey(windowName)) {
-            restore(store.get(windowName));
+        if (store.containsKey(WINDOW_NAME)) {
+            WindowPosition data = store.get(WINDOW_NAME);
+            Dimension size = new Dimension();
+            size.width = data.getWidth();
+            size.height = data.getHeight();
+            m_logContent.setSize(size);
+            this.setSize(size);
+            try {
+                this.setIcon(data.isHide());
+            } catch (PropertyVetoException ignored) {}
+            this.setLocation(data.getX(), data.getY());
+            this.setVisible(true);
         }
-    }
-
-    private void restore(WindowPosition data) {
-        Dimension size = new Dimension();
-        size.width = data.getWidth();
-        size.height = data.getHeight();
-        m_logContent.setSize(size);
-        this.setSize(size);
-        try {
-            this.setIcon(data.isHide());
-        } catch (PropertyVetoException ignored) {}
-        this.setLocation(data.getX(), data.getY());
-        this.setVisible(true);
     }
 
     @Override
     public WindowPosition getDataForStore() {
         return new WindowPosition(
-                windowName,
+                WINDOW_NAME,
                 this.getSize().width,
                 this.getSize().height,
                 this.isIcon,

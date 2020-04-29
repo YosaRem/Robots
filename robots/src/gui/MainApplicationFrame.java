@@ -30,6 +30,9 @@ public class MainApplicationFrame extends JFrame implements HaveStorableFrames
 
         setContentPane(desktopPane);
 
+        RobotInfoWindow robotInfoWindow = new RobotInfoWindow();
+        addWindow(robotInfoWindow);
+
         LogWindow logWindow = createLogWindow();
         addWindow(logWindow);
 

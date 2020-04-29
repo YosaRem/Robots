@@ -34,6 +34,10 @@ public class Robot {
         return new Point(round(robotPositionX), round(robotPositionY));
     }
 
+    public double getRobotDirection() {
+        return robotDirection;
+    }
+
     public Target getTarget() { return target; }
 
     public void updateTarget(Target target) {

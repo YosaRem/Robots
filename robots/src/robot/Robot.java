@@ -1,10 +1,13 @@
 package robot;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Robot {
+public class Robot implements Observable {
+    private final List<Observer> observers = new ArrayList<>();
     private volatile double robotPositionX;
     private volatile double robotPositionY;
     private volatile double robotDirection;
@@ -38,7 +41,9 @@ public class Robot {
         return robotDirection;
     }
 
-    public Target getTarget() { return target; }
+    public Target getTarget() {
+        return target;
+    }
 
     public void updateTarget(Target target) {
         this.target = target;
@@ -46,7 +51,9 @@ public class Robot {
 
     private void onModelUpdateEvent() {
         Point targetPosition = target.getTargetPosition();
-        if (distance(targetPosition.x, targetPosition.y, robotPositionX, robotPositionY) < 0.5) { return; }
+        if (distance(targetPosition.x, targetPosition.y, robotPositionX, robotPositionY) < 0.5) {
+            return;
+        }
         double angleToTarget = angleTo(
                 robotPositionX, robotPositionY,
                 targetPosition.x, targetPosition.y
@@ -72,6 +79,7 @@ public class Robot {
         robotPositionY = newY;
         double newDirection = asNormalizedRadians(robotDirection + angularVelocity * VELOCITY_DURATION);
         robotDirection = newDirection;
+        notifyObservers();
     }
 
     private static double distance(double x1, double y1, double x2, double y2) {
@@ -87,7 +95,7 @@ public class Robot {
     }
 
     private static int round(double value) {
-        return (int)(value + 0.5);
+        return (int) (value + 0.5);
     }
 
     private static double applyLimits(double value, double min, double max) {
@@ -98,11 +106,23 @@ public class Robot {
 
     private static double asNormalizedRadians(double angle) {
         while (angle < 0) {
-            angle += 2*Math.PI;
+            angle += 2 * Math.PI;
         }
-        while (angle >= 2*Math.PI) {
-            angle -= 2*Math.PI;
+        while (angle >= 2 * Math.PI) {
+            angle -= 2 * Math.PI;
         }
         return angle;
+    }
+
+    @Override
+    public synchronized void addObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void notifyObservers() {
+        for (Observer observer : observers) {
+            observer.objectModified(this);
+        }
     }
 }

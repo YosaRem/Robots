@@ -1,5 +1,7 @@
 package gui;
 
+import robot.Observer;
+import robot.Robot;
 import store.HasState;
 import store.WindowState;
 
@@ -8,7 +10,7 @@ import java.awt.*;
 import java.beans.PropertyVetoException;
 import java.util.Map;
 
-public class RobotInfoWindow extends JInternalFrame implements HasState {
+public class RobotInfoWindow extends JInternalFrame implements HasState, Observer {
     private static final String WINDOW_NAME = "RobotInfoName";
 
     public RobotInfoWindow() {
@@ -17,6 +19,11 @@ public class RobotInfoWindow extends JInternalFrame implements HasState {
         this.setLocation(10, 10);
     }
 
+    private void printRobotStatus(Robot robot) {
+        Point robotPosition = robot.getRobotPosition();
+
+        this.setLocation(robotPosition.x, robotPosition.y);
+    }
 
     @Override
     public WindowState getState() {
@@ -43,6 +50,13 @@ public class RobotInfoWindow extends JInternalFrame implements HasState {
             } catch (PropertyVetoException ignored) {}
             this.setLocation(data.getX(), data.getY());
             this.setVisible(true);
+        }
+    }
+
+    @Override
+    public void objectModified(Object obj) {
+        if (obj instanceof Robot) {
+            printRobotStatus((Robot) obj);
         }
     }
 }

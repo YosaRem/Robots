@@ -3,17 +3,12 @@ package robot;
 import java.awt.*;
 
 public class Target {
-    private volatile int targetPositionX;
-    private volatile int targetPositionY;
+    private final int targetPositionX;
+    private final int targetPositionY;
 
-    public Target(int targetPositionX, int targetPositionY) {
-        this.targetPositionX = targetPositionX;
-        this.targetPositionY = targetPositionY;
-    }
-
-    public void setTargetPosition(Point point) {
-        targetPositionX = point.x;
-        targetPositionY = point.y;
+    public Target(Point point) {
+        this.targetPositionX = point.x;
+        this.targetPositionY = point.y;
     }
 
     public Point getTargetPosition() {

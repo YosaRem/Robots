@@ -16,12 +16,13 @@ import store.HaveStorableFrames;
 import store.PositionStore;
 import store.HasState;
 import store.WindowState;
+import robot.Robot;
 
 public class MainApplicationFrame extends JFrame implements HaveStorableFrames
 {
     private final JDesktopPane desktopPane = new JDesktopPane();
     
-    public MainApplicationFrame() {
+    public MainApplicationFrame(Robot robot) {
         int inset = 50;        
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setBounds(inset, inset,
@@ -36,7 +37,7 @@ public class MainApplicationFrame extends JFrame implements HaveStorableFrames
         LogWindow logWindow = createLogWindow();
         addWindow(logWindow);
 
-        GameWindow gameWindow = new GameWindow();
+        GameWindow gameWindow = new GameWindow(robot);
         addWindow(gameWindow);
 
 

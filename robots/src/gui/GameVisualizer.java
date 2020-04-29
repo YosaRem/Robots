@@ -44,17 +44,15 @@ public class GameVisualizer extends JPanel
         setDoubleBuffered(true);
     }
 
-    protected void onRedrawEvent()
-    {
+    protected void onRedrawEvent() {
         EventQueue.invokeLater(this::repaint);
     }
     
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        Point robotPosition = robot.getRobotPosition();
         Graphics2D g2d = (Graphics2D)g; 
-        drawRobot(g2d, robotPosition.x, robotPosition.y, robot.getRobotDirection());
+        drawRobot(g2d);
         Point targetPosition = robot.getTarget().getTargetPosition();
         drawTarget(g2d, targetPosition.x, targetPosition.y);
     }
@@ -67,20 +65,18 @@ public class GameVisualizer extends JPanel
         g.drawOval(centerX - diam1 / 2, centerY - diam2 / 2, diam1, diam2);
     }
     
-    private void drawRobot(Graphics2D g, int x, int y, double direction) {
+    private void drawRobot(Graphics2D g) {
         Point robotPosition = robot.getRobotPosition();
-        int robotCenterX = robotPosition.x;
-        int robotCenterY = robotPosition.y;
-        AffineTransform t = AffineTransform.getRotateInstance(direction, robotCenterX, robotCenterY); 
+        AffineTransform t = AffineTransform.getRotateInstance(robot.getRobotDirection(), robotPosition.x, robotPosition.y);
         g.setTransform(t);
         g.setColor(Color.MAGENTA);
-        fillOval(g, robotCenterX, robotCenterY, 30, 10);
+        fillOval(g, robotPosition.x, robotPosition.y, 30, 10);
         g.setColor(Color.BLACK);
-        drawOval(g, robotCenterX, robotCenterY, 30, 10);
+        drawOval(g, robotPosition.x, robotPosition.y, 30, 10);
         g.setColor(Color.WHITE);
-        fillOval(g, robotCenterX  + 10, robotCenterY, 5, 5);
+        fillOval(g, robotPosition.x  + 10, robotPosition.y, 5, 5);
         g.setColor(Color.BLACK);
-        drawOval(g, robotCenterX  + 10, robotCenterY, 5, 5);
+        drawOval(g, robotPosition.x  + 10, robotPosition.y, 5, 5);
     }
     
     private void drawTarget(Graphics2D g, int x, int y) {

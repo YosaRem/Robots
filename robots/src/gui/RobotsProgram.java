@@ -1,8 +1,10 @@
 package gui;
 
+import robot.Robot;
+import robot.Target;
 import store.PositionStore;
 
-import java.awt.Frame;
+import java.awt.*;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -19,7 +21,8 @@ public class RobotsProgram
         e.printStackTrace();
       }
       SwingUtilities.invokeLater(() -> {
-        MainApplicationFrame frame = new MainApplicationFrame();
+        Robot robot = new Robot(100, 100, new Target(new Point(150, 100)));
+        MainApplicationFrame frame = new MainApplicationFrame(robot);
         frame.pack();
         frame.restore(new PositionStore(frame, System.getProperty("user.home")));
         frame.setVisible(true);

@@ -10,14 +10,16 @@ import java.util.Map;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 
+import robot.Robot;
+
 public class GameWindow extends JInternalFrame implements HasState {
     private final GameVisualizer m_visualizer;
     public static final String WINDOW_NAME = "GameWindow";
 
-    public GameWindow() 
+    public GameWindow(Robot robot)
     {
         super("Игровое поле", true, true, true, true);
-        m_visualizer = new GameVisualizer();
+        m_visualizer = new GameVisualizer(robot);
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(m_visualizer, BorderLayout.CENTER);
         getContentPane().add(panel);

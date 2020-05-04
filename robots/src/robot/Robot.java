@@ -54,67 +54,67 @@ public class Robot implements Observable {
         Point targetPosition = target.getTargetPosition();
         double distance = distance(robotPositionX, robotPositionY,
                 targetPosition.x, targetPosition.y);
-        if (distance < 0.5)
-        {
+        if (distance < 0.5) {
             return;
         }
-        double angleToTarget = asNormalizedRadians(angleTo(robotPositionX, robotPositionY, targetPosition.x, targetPosition.y));
-        ang = angleToTarget;
-        moveRobot(getShortDirection(angleToTarget));
+        double angleToTarget = asNormalizedRadians(angleTo(
+                robotPositionX, robotPositionY,
+                targetPosition.x, targetPosition.y
+        ));
+        recalculateRobotCoordinate(getShortDirection(angleToTarget));
     }
 
-    private void moveRobot(double angularVelocity) {
-        angularVelocity = applyLimits(angularVelocity, -MAX_ANGULAR_VELOCITY, MAX_ANGULAR_VELOCITY);
+    private void recalculateRobotCoordinate(double angularVelocity) {
         double newX = robotPositionX + MAX_VELOCITY / angularVelocity *
                 (Math.sin(robotDirection  + angularVelocity * VELOCITY_DURATION) -
                         Math.sin(robotDirection));
-//        if (!Double.isFinite(newX))
-//        {
-//            newX = robotPositionX + MAX_VELOCITY * VELOCITY_DURATION * Math.cos(robotDirection);
-//        }
         double newY = robotPositionY - MAX_VELOCITY / angularVelocity *
                 (Math.cos(robotDirection  + angularVelocity * VELOCITY_DURATION) -
                         Math.cos(robotDirection));
-//        if (!Double.isFinite(newY))
-//        {
-//            newY = robotPositionY + MAX_VELOCITY * VELOCITY_DURATION * Math.sin(robotDirection);
-//        }
+        double newDirection = asNormalizedRadians(robotDirection + angularVelocity * VELOCITY_DURATION);
         robotPositionX = newX;
         robotPositionY = newY;
-        double newDirection = asNormalizedRadians(robotDirection + angularVelocity * VELOCITY_DURATION);
         robotDirection = newDirection;
         notifyObservers();
     }
 
-    private double getShortDirection(double angleToTarget) {
-        if (angleToTarget < 0) {
-            if (robotDirection < 0) {
-                if (angleToTarget < robotDirection) {
-                    return -MAX_ANGULAR_VELOCITY;
-                } else {
-                    return MAX_ANGULAR_VELOCITY;
-                }
+    private double getShortDirectionNegativeAngle(double angleToTarget) {
+        if (robotDirection < 0) {
+            if (angleToTarget < robotDirection) {
+                return -MAX_ANGULAR_VELOCITY;
             } else {
-                if (Math.abs(angleToTarget) + robotDirection < Math.PI) {
-                    return -MAX_ANGULAR_VELOCITY;
-                } else {
-                    return MAX_ANGULAR_VELOCITY;
-                }
+                return MAX_ANGULAR_VELOCITY;
             }
         } else {
-            if (robotDirection > 0) {
-                if (angleToTarget > robotDirection) {
-                    return MAX_ANGULAR_VELOCITY;
-                } else {
-                    return -MAX_ANGULAR_VELOCITY;
-                }
+            if (Math.abs(angleToTarget) + robotDirection < Math.PI) {
+                return -MAX_ANGULAR_VELOCITY;
             } else {
-                if (angleToTarget + Math.abs(robotDirection) < Math.PI) {
-                    return MAX_ANGULAR_VELOCITY;
-                } else {
-                    return -MAX_ANGULAR_VELOCITY;
-                }
+                return MAX_ANGULAR_VELOCITY;
             }
+        }
+    }
+
+    private double getShortDirectionPositiveAngle(double angleToTarget) {
+        if (robotDirection > 0) {
+            if (angleToTarget > robotDirection) {
+                return MAX_ANGULAR_VELOCITY;
+            } else {
+                return -MAX_ANGULAR_VELOCITY;
+            }
+        } else {
+            if (angleToTarget + Math.abs(robotDirection) < Math.PI) {
+                return MAX_ANGULAR_VELOCITY;
+            } else {
+                return -MAX_ANGULAR_VELOCITY;
+            }
+        }
+    }
+
+    private double getShortDirection(double angleToTarget) {
+        if (angleToTarget < 0) {
+            return getShortDirectionNegativeAngle(angleToTarget);
+        } else {
+            return getShortDirectionPositiveAngle(angleToTarget);
         }
     }
 
@@ -132,12 +132,6 @@ public class Robot implements Observable {
 
     private static int round(double value) {
         return (int) (value + 0.5);
-    }
-
-    private static double applyLimits(double value, double min, double max) {
-        if (value < min)
-            return min;
-        return Math.min(value, max);
     }
 
     private static double asNormalizedRadians(double angle) {

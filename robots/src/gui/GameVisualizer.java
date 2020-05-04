@@ -18,10 +18,9 @@ import javax.swing.JPanel;
 
 public class GameVisualizer extends JPanel
 {
-    private Robot robot;
+    private final Robot robot;
     
-    public GameVisualizer(Robot robot)
-    {
+    public GameVisualizer(Robot robot) {
         this.robot = robot;
         addMouseListener(new MouseAdapter()
         {

@@ -15,7 +15,6 @@ import javax.swing.JPanel;
 import robot.Robot;
 
 public class GameWindow extends JInternalFrame implements HasState {
-    private final GameVisualizer m_visualizer;
     public static final String WINDOW_NAME = "GameWindow";
 
     public GameWindow(Robot robot)
@@ -23,7 +22,7 @@ public class GameWindow extends JInternalFrame implements HasState {
         super("Игровое поле", true, true, true, true);
         Timer timer = new Timer("event generator", true);
         robot.synchronizeWithTimer(timer);
-        m_visualizer = new GameVisualizer(robot);
+        GameVisualizer m_visualizer = new GameVisualizer(robot);
         m_visualizer.synchronizeWithTimer(timer);
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(m_visualizer, BorderLayout.CENTER);

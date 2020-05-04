@@ -26,7 +26,7 @@ public class RobotInfoWindow extends JInternalFrame implements HasState, Observe
     private void printRobotStatus(Robot robot) {
         Point robotPosition = robot.getRobotPosition();
         infoField.setText(String.format(
-                "x: %d;  y: %d;  dir: %f;",
+                "x: %d;  y: %d;  Направление: %f;",
                 robotPosition.x, robotPosition.y,
                 robot.getRobotDirection()
         ));

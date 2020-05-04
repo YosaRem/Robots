@@ -12,17 +12,24 @@ import java.util.Map;
 
 public class RobotInfoWindow extends JInternalFrame implements HasState, Observer {
     private static final String WINDOW_NAME = "RobotInfoName";
+    private static final JTextField infoField = new JTextField();
 
     public RobotInfoWindow() {
         super("Окно информации о роботе", true, true, true, true);
         this.setSize(new Dimension(200, 200));
+        infoField.setEditable(false);
+        infoField.setText("x: 0\ny: 0");
+        this.add(infoField);
         this.setLocation(10, 10);
     }
 
     private void printRobotStatus(Robot robot) {
         Point robotPosition = robot.getRobotPosition();
-
-        this.setLocation(robotPosition.x, robotPosition.y);
+        infoField.setText(String.format(
+                "x: %d;  y: %d;  dir: %f;",
+                robotPosition.x, robotPosition.y,
+                robot.getRobotDirection()
+        ));
     }
 
     @Override

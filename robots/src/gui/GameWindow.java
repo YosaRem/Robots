@@ -6,6 +6,7 @@ import store.WindowState;
 import java.awt.*;
 import java.beans.PropertyVetoException;
 import java.util.Map;
+import java.util.Timer;
 
 
 import javax.swing.JInternalFrame;
@@ -20,7 +21,10 @@ public class GameWindow extends JInternalFrame implements HasState {
     public GameWindow(Robot robot)
     {
         super("Игровое поле", true, true, true, true);
+        Timer timer = new Timer("event generator", true);
+        robot.synchronizeWithTimer(timer);
         m_visualizer = new GameVisualizer(robot);
+        m_visualizer.synchronizeWithTimer(timer);
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(m_visualizer, BorderLayout.CENTER);
         getContentPane().add(panel);

@@ -23,15 +23,6 @@ public class GameVisualizer extends JPanel
     public GameVisualizer(Robot robot)
     {
         this.robot = robot;
-        Timer timer = new Timer("events generator", true);
-        timer.schedule(new TimerTask()
-        {
-            @Override
-            public void run()
-            {
-                onRedrawEvent();
-            }
-        }, 0, 50);
         addMouseListener(new MouseAdapter()
         {
             @Override
@@ -42,6 +33,17 @@ public class GameVisualizer extends JPanel
             }
         });
         setDoubleBuffered(true);
+    }
+
+    public void synchronizeWithTimer(Timer timer) {
+        timer.schedule(new TimerTask()
+        {
+            @Override
+            public void run()
+            {
+                onRedrawEvent();
+            }
+        }, 0, 50);
     }
 
     protected void onRedrawEvent() {

@@ -2,6 +2,9 @@ package robot;
 
 import java.awt.*;
 
+/**
+ * This class describe robot's target.
+ */
 public class Target {
     private final int targetPositionX;
     private final int targetPositionY;

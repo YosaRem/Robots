@@ -16,6 +16,9 @@ import java.util.TimerTask;
 
 import javax.swing.JPanel;
 
+/**
+ * This class draws robot in window
+ */
 public class GameVisualizer extends JPanel
 {
     private final Robot robot;

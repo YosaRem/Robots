@@ -10,6 +10,9 @@ import java.awt.*;
 import java.beans.PropertyVetoException;
 import java.util.Map;
 
+/**
+ * This class print out information about robot's position.
+ */
 public class RobotInfoWindow extends JInternalFrame implements HasState, Observer {
     private static final String WINDOW_NAME = "RobotInfoName";
     private static final JTextField infoField = new JTextField();

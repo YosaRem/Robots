@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * This class responsible for robot's movement logic.
+ * This class observalbe so observers are notified when robot's position changing.
+ */
 public class Robot implements Observable {
     private final List<Observer> observers = new ArrayList<>();
     private volatile double robotPositionX;

@@ -11,7 +11,7 @@ import java.util.TimerTask;
  * This class observalbe so observers are notified when robot's position changing.
  */
 public class Robot implements Observable {
-    private final List<Observer> observers = new ArrayList<>();
+    private final List<Observer> observers;
     private volatile double robotPositionX;
     private volatile double robotPositionY;
     private volatile double robotDirection;
@@ -23,6 +23,7 @@ public class Robot implements Observable {
     private static final double VELOCITY_DURATION = 10;
 
     public Robot(double robotPositionX, double robotPositionY, Target target) {
+        this.observers = new ArrayList<>();
         this.robotPositionX = robotPositionX;
         this.robotPositionY = robotPositionY;
         this.target = target;

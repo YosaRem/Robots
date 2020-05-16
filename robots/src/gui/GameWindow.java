@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 import robot.Robot;
 
 public class GameWindow extends JInternalFrame implements HasState {
-    public static final String WINDOW_NAME = "GameWindow";
+    private static final String WINDOW_NAME = "GameWindow";
 
     public GameWindow(Robot robot)
     {

@@ -15,11 +15,12 @@ import java.util.Map;
  */
 public class RobotInfoWindow extends JInternalFrame implements HasState, Observer {
     private static final String WINDOW_NAME = "RobotInfoName";
-    private static final JTextField infoField = new JTextField();
+    private static JTextField infoField;
 
     public RobotInfoWindow() {
         super("Окно информации о роботе", true, true, true, true);
         this.setSize(new Dimension(200, 200));
+        infoField = new JTextField();
         infoField.setEditable(false);
         infoField.setText("x: 0\ny: 0");
         this.add(infoField);

@@ -48,7 +48,7 @@ public class GameVisualizer extends JPanel
         }, 0, 50);
     }
 
-    protected void onRedrawEvent() {
+    private void onRedrawEvent() {
         EventQueue.invokeLater(this::repaint);
     }
     
@@ -83,7 +83,7 @@ public class GameVisualizer extends JPanel
         drawOval(g, robotPosition.x  + 10, robotPosition.y, 5, 5);
     }
     
-    private void drawTarget(Graphics2D g, int x, int y) {
+    private static void drawTarget(Graphics2D g, int x, int y) {
         AffineTransform t = AffineTransform.getRotateInstance(0, 0, 0); 
         g.setTransform(t);
         g.setColor(Color.GREEN);

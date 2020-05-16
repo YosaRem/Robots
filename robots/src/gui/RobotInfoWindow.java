@@ -3,6 +3,7 @@ package gui;
 import robot.Observer;
 import robot.Robot;
 import store.HasState;
+import store.Restorer;
 import store.WindowState;
 
 import javax.swing.*;
@@ -50,18 +51,7 @@ public class RobotInfoWindow extends JInternalFrame implements HasState, Observe
 
     @Override
     public void setState(Map<String, WindowState> store) {
-        if (store.containsKey(WINDOW_NAME)) {
-            WindowState data = store.get(WINDOW_NAME);
-            Dimension size = new Dimension();
-            size.width = data.getWidth();
-            size.height = data.getHeight();
-            this.setSize(size);
-            try {
-                this.setIcon(data.isHide());
-            } catch (PropertyVetoException ignored) {}
-            this.setLocation(data.getX(), data.getY());
-            this.setVisible(true);
-        }
+        Restorer.restore(this, store, WINDOW_NAME);
     }
 
     @Override

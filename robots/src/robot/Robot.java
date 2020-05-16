@@ -66,7 +66,7 @@ public class Robot implements Observable {
                 robotPositionX, robotPositionY,
                 targetPosition.x, targetPosition.y
         ));
-        recalculateRobotCoordinate(getShortDirection(angleToTarget));
+        recalculateRobotCoordinate(getRotation(angleToTarget));
     }
 
     private void recalculateRobotCoordinate(double angularVelocity) {
@@ -83,44 +83,11 @@ public class Robot implements Observable {
         notifyObservers();
     }
 
-    private double getShortDirectionNegativeAngle(double angleToTarget) {
-        if (robotDirection < 0) {
-            if (angleToTarget < robotDirection) {
-                return -MAX_ANGULAR_VELOCITY;
-            } else {
-                return MAX_ANGULAR_VELOCITY;
-            }
-        } else {
-            if (Math.abs(angleToTarget) + robotDirection < Math.PI) {
-                return -MAX_ANGULAR_VELOCITY;
-            } else {
-                return MAX_ANGULAR_VELOCITY;
-            }
+    private double getRotation(double angle) {
+        if (asNormalizedRadians(angle - robotDirection) < 0) {
+            return -MAX_ANGULAR_VELOCITY;
         }
-    }
-
-    private double getShortDirectionPositiveAngle(double angleToTarget) {
-        if (robotDirection > 0) {
-            if (angleToTarget > robotDirection) {
-                return MAX_ANGULAR_VELOCITY;
-            } else {
-                return -MAX_ANGULAR_VELOCITY;
-            }
-        } else {
-            if (angleToTarget + Math.abs(robotDirection) < Math.PI) {
-                return MAX_ANGULAR_VELOCITY;
-            } else {
-                return -MAX_ANGULAR_VELOCITY;
-            }
-        }
-    }
-
-    private double getShortDirection(double angleToTarget) {
-        if (angleToTarget < 0) {
-            return getShortDirectionNegativeAngle(angleToTarget);
-        } else {
-            return getShortDirectionPositiveAngle(angleToTarget);
-        }
+        return MAX_ANGULAR_VELOCITY;
     }
 
     private static double distance(double x1, double y1, double x2, double y2) {

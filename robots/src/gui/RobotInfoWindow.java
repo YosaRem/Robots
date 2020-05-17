@@ -19,12 +19,12 @@ public class RobotInfoWindow extends JInternalFrame implements HasState, Observe
 
     public RobotInfoWindow() {
         super("Окно информации о роботе", true, true, true, true);
-        this.setSize(new Dimension(200, 200));
+        setLocation(300, 100);
+        setSize(new Dimension(300, 100));
         infoField = new JTextField();
         infoField.setEditable(false);
         infoField.setText("x: 0\ny: 0");
-        this.add(infoField);
-        this.setLocation(10, 10);
+        add(infoField);
     }
 
     private void printRobotStatus(Robot robot) {

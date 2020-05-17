@@ -19,6 +19,8 @@ public class GameWindow extends JInternalFrame implements HasState {
     public GameWindow(Robot robot)
     {
         super("Игровое поле", true, true, true, true);
+        setLocation(300, 300);
+        setPreferredSize(new Dimension(800, 500));
         Timer timer = new Timer("event generator", true);
         robot.synchronizeWithTimer(timer);
         GameVisualizer m_visualizer = new GameVisualizer(robot);

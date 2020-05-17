@@ -1,6 +1,9 @@
 package robot;
 
+import log.Logger;
+
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -21,6 +24,7 @@ public class Robot implements Observable {
     private static final double MAX_VELOCITY = 0.1;
     private static final double MAX_ANGULAR_VELOCITY = 0.001;
     private static final double VELOCITY_DURATION = 10;
+    private static final double RADIUS = 100;
 
     public Robot(double robotPositionX, double robotPositionY, Target target) {
         this.observers = new ArrayList<>();
@@ -84,10 +88,30 @@ public class Robot implements Observable {
     }
 
     private double getRotation(double angle) {
+        if (!isReachableWithRotation()) {
+            return MAX_ANGULAR_VELOCITY / 100;
+        }
         if (asNormalizedRadians(angle - robotDirection) < 0) {
             return -MAX_ANGULAR_VELOCITY;
         }
         return MAX_ANGULAR_VELOCITY;
+    }
+
+    private boolean isReachableWithRotation() {
+        Point targetPosition = getTarget().getTargetPosition();
+        double normal = asNormalizedRadians(robotDirection - Math.PI / 2);
+        double positiveDirection = normal < 0 ? Math.abs(normal) : Math.abs(normal - Math.PI);
+        double offsetX = Math.cos(positiveDirection) * RADIUS;
+        double offsetY = Math.sin(positiveDirection) * RADIUS;
+        boolean isInRightCircle = distance(
+                robotPositionX + offsetX, robotPositionY - offsetY,
+                targetPosition.getX(), targetPosition.getY()
+        ) < RADIUS;
+        boolean isInLeftCircle = distance(
+                robotPositionX - offsetX, robotPositionY + offsetY,
+                targetPosition.getX(), targetPosition.getY()
+        ) < RADIUS;
+        return !(isInLeftCircle || isInRightCircle);
     }
 
     private static double distance(double x1, double y1, double x2, double y2) {

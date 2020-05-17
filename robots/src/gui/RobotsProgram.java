@@ -18,7 +18,7 @@ public class RobotsProgram
         e.printStackTrace();
       }
       SwingUtilities.invokeLater(() -> {
-        Robot robot = new Robot(100, 100, new Target(new Point(150, 100)));
+        Robot robot = new Robot(300, 200, new Target(new Point(350, 200)));
         MainApplicationFrame frame = new MainApplicationFrame(robot);
         frame.pack();
         frame.restore(new PositionStore(frame, System.getProperty("user.home")));

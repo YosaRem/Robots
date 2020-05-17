@@ -1,23 +1,30 @@
 package gui;
 
 import store.HasState;
+import store.Restorer;
 import store.WindowState;
 
 import java.awt.*;
-import java.beans.PropertyVetoException;
 import java.util.Map;
+import java.util.Timer;
 
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 
-public class GameWindow extends JInternalFrame implements HasState {
-    private final GameVisualizer m_visualizer;
-    public static final String WINDOW_NAME = "GameWindow";
+import robot.Robot;
 
-    public GameWindow() 
+public class GameWindow extends JInternalFrame implements HasState {
+    private static final String WINDOW_NAME = "GameWindow";
+
+    public GameWindow(Robot robot)
     {
         super("Игровое поле", true, true, true, true);
-        m_visualizer = new GameVisualizer();
+        setLocation(300, 300);
+        setPreferredSize(new Dimension(800, 500));
+        Timer timer = new Timer("event generator", true);
+        robot.synchronizeWithTimer(timer);
+        GameVisualizer m_visualizer = new GameVisualizer(robot);
+        m_visualizer.synchronizeWithTimer(timer);
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(m_visualizer, BorderLayout.CENTER);
         getContentPane().add(panel);
@@ -26,18 +33,7 @@ public class GameWindow extends JInternalFrame implements HasState {
 
     @Override
     public void setState(Map<String, WindowState> store) {
-        if (store.containsKey(WINDOW_NAME)) {
-            WindowState data = store.get(WINDOW_NAME);
-            Dimension size = new Dimension();
-            size.width = data.getWidth();
-            size.height = data.getHeight();
-            this.setSize(size);
-            try {
-                this.setIcon(data.isHide());
-            } catch (PropertyVetoException ignored) {}
-            this.setLocation(data.getX(), data.getY());
-            this.setVisible(true);
-        }
+        Restorer.restore(this, store, WINDOW_NAME);
     }
 
     @Override

@@ -65,8 +65,8 @@ public class PositionStore {
         String toWrite = String.format(
                 "%s: %s\n%s: %d\n%s: %d\n%s: %d\n%s: %d\n%s: %b\n\n",
                 "name", frameInfo.getName(),
-                "height", frameInfo.getHeight(),
                 "width", frameInfo.getWidth(),
+                "height", frameInfo.getHeight(),
                 "x", frameInfo.getX(),
                 "y", frameInfo.getY(),
                 "isHide", frameInfo.isHide()

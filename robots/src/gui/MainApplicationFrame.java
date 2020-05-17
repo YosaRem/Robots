@@ -78,7 +78,7 @@ public class MainApplicationFrame extends JFrame implements HaveStorableFrames {
         };
     }
 
-    protected LogWindow createLogWindow() {
+    private static LogWindow createLogWindow() {
         LogWindow logWindow = new LogWindow(Logger.getDefaultLogSource());
         logWindow.setMinimumSize(logWindow.getSize());
         logWindow.pack();
@@ -86,7 +86,7 @@ public class MainApplicationFrame extends JFrame implements HaveStorableFrames {
         return logWindow;
     }
 
-    protected void addWindow(JInternalFrame frame) {
+    private void addWindow(JInternalFrame frame) {
         desktopPane.add(frame);
         frame.setVisible(true);
     }
@@ -135,9 +135,7 @@ public class MainApplicationFrame extends JFrame implements HaveStorableFrames {
 
         {
             JMenuItem addLogMessageItem = new JMenuItem("Сообщение в лог", KeyEvent.VK_S);
-            addLogMessageItem.addActionListener((event) -> {
-                Logger.debug("Новая строка");
-            });
+            addLogMessageItem.addActionListener((event) -> Logger.debug("Новая строка"));
             testMenu.add(addLogMessageItem);
         }
 

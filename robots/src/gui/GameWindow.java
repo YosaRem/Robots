@@ -5,10 +5,8 @@ import store.Restorer;
 import store.WindowState;
 
 import java.awt.*;
-import java.beans.PropertyVetoException;
 import java.util.Map;
 import java.util.Timer;
-
 
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;

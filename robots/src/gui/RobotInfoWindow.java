@@ -8,7 +8,6 @@ import store.WindowState;
 
 import javax.swing.*;
 import java.awt.*;
-import java.beans.PropertyVetoException;
 import java.util.Map;
 
 /**
@@ -16,7 +15,7 @@ import java.util.Map;
  */
 public class RobotInfoWindow extends JInternalFrame implements HasState, Observer {
     private static final String WINDOW_NAME = "RobotInfoName";
-    private static JTextField infoField;
+    private final JTextField infoField;
 
     public RobotInfoWindow() {
         super("Окно информации о роботе", true, true, true, true);

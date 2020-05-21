@@ -31,7 +31,7 @@ public class MainApplicationFrame extends JFrame implements HaveStorableFrames {
         setContentPane(desktopPane);
 
         RobotInfoWindow robotInfoWindow = new RobotInfoWindow();
-        robot.addObserver(robotInfoWindow);
+        robot.registerObserver(robotInfoWindow);
         addWindow(robotInfoWindow);
 
         LogWindow logWindow = createLogWindow();
@@ -82,6 +82,7 @@ public class MainApplicationFrame extends JFrame implements HaveStorableFrames {
         LogWindow logWindow = new LogWindow(Logger.getDefaultLogSource());
         logWindow.setMinimumSize(logWindow.getSize());
         logWindow.pack();
+        Logger.debug("deb");
         Logger.debug("Протокол работает");
         return logWindow;
     }

@@ -7,13 +7,13 @@ import java.util.Map;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 
-import log.LogChangeListener;
 import log.LogEntry;
 import log.LogWindowSource;
+import robot.Observer;
 import store.HasState;
 import store.WindowState;
 
-public class LogWindow extends JInternalFrame implements LogChangeListener, HasState {
+public class LogWindow extends JInternalFrame implements Observer, HasState {
     private LogWindowSource m_logSource;
     private TextArea m_logContent;
     public static final String WINDOW_NAME = "LogWindow";
@@ -22,7 +22,7 @@ public class LogWindow extends JInternalFrame implements LogChangeListener, HasS
     {
         super("Протокол работы", true, true, true, true);
         m_logSource = logSource;
-        m_logSource.registerListener(this);
+        m_logSource.registerObserver(this);
         m_logContent = new TextArea("");
         m_logContent.setSize(200, 500);
         
@@ -42,12 +42,6 @@ public class LogWindow extends JInternalFrame implements LogChangeListener, HasS
         }
         m_logContent.setText(content.toString());
         m_logContent.invalidate();
-    }
-    
-    @Override
-    public void onLogChanged()
-    {
-        EventQueue.invokeLater(this::updateLogContent);
     }
 
     @Override
@@ -77,5 +71,10 @@ public class LogWindow extends JInternalFrame implements LogChangeListener, HasS
                 this.getLocation().x,
                 this.getLocation().y
         );
+    }
+
+    @Override
+    public void objectModified(Object obj) {
+        EventQueue.invokeLater(this::updateLogContent);
     }
 }

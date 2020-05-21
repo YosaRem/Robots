@@ -138,8 +138,15 @@ public class Robot implements Observable {
     }
 
     @Override
-    public synchronized void addObserver(Observer observer) {
+    public synchronized void registerObserver(Observer observer) {
         observers.add(observer);
+    }
+
+    @Override
+    public void unregisterObserver(Observer observer) {
+        synchronized (observers) {
+            observers.remove(observer);
+        }
     }
 
     @Override

@@ -1,6 +1,7 @@
 package robot;
 
 public interface Observable {
-    void addObserver(Observer observer);
+    void registerObserver(Observer observer);
+    void unregisterObserver(Observer observer);
     void notifyObservers();
 }

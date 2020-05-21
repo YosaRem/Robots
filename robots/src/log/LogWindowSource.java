@@ -34,16 +34,14 @@ public class LogWindowSource implements Observable
 
     @Override
     public void registerObserver(Observer observer) {
-        synchronized(listeners)
-        {
+        synchronized(listeners) {
             listeners.add(observer);
         }
     }
 
     @Override
     public void unregisterObserver(Observer observer) {
-        synchronized(listeners)
-        {
+        synchronized(listeners) {
             listeners.remove(observer);
         }
     }

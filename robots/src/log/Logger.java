@@ -4,15 +4,12 @@ public final class Logger
 {
     private static final LogWindowSource defaultLogSource;
     static {
-        defaultLogSource = new LogWindowSource(6);
+        defaultLogSource = new LogWindowSource(10);
     }
     
-    private Logger()
-    {
-    }
+    private Logger() {}
 
-    public static void debug(String strMessage)
-    {
+    public static void debug(String strMessage) {
         defaultLogSource.append(LogLevel.Debug, strMessage);
     }
     
@@ -21,8 +18,7 @@ public final class Logger
         defaultLogSource.append(LogLevel.Error, strMessage);
     }
 
-    public static LogWindowSource getDefaultLogSource()
-    {
+    public static LogWindowSource getDefaultLogSource() {
         return defaultLogSource;
     }
 }

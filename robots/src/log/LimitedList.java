@@ -19,7 +19,9 @@ public class LimitedList<T> {
         if (isOverflowing()) {
             toStart();
         } else {
-            start += 1;
+            if (list.size() - start > LIMIT) {
+                start++;
+            }
         }
     }
 
@@ -27,7 +29,11 @@ public class LimitedList<T> {
         return list.get(start + i);
     }
 
-    synchronized public int getSize() {
+    synchronized public List<T> all() {
+        return new ArrayList<>(list.subList(start, list.size()));
+    }
+
+    synchronized public int size() {
         return list.size() - start;
     }
 

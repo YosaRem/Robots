@@ -1,5 +1,7 @@
 package robot;
 
+import log.Logger;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +55,7 @@ public class Robot implements Observable {
     }
 
     public void updateTarget(Target target) {
+        Logger.debug("Target updated");
         this.target = target;
     }
 
@@ -61,6 +64,7 @@ public class Robot implements Observable {
         double distance = distance(robotPositionX, robotPositionY,
                 targetPosition.x, targetPosition.y);
         if (distance < 0.5) {
+            Logger.debug("Robot has done his work");
             return;
         }
         double angleToTarget = asNormalizedRadians(angleTo(

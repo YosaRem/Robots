@@ -12,49 +12,52 @@ import java.util.List;
  * который хранит все старые данные, но не содержит все старые данные.
  */
 public class LimitedList<T> {
-    private final int LIMIT;
+    private final int limit;
     private volatile int start;
     private volatile List<T> list;
 
     public LimitedList(int limit) {
-        LIMIT = limit;
+        if (limit <= 0) {
+            throw new IllegalArgumentException();
+        }
+        this.limit = limit;
         list = new ArrayList<>();
         start = 0;
     }
 
-    synchronized public void add(T element) {
+    public synchronized void add(T element) {
         list.add(element);
         if (isOverflowing()) {
             toStart();
         } else {
-            if (list.size() - start > LIMIT) {
+            if (list.size() - start > limit) {
                 start++;
             }
         }
     }
 
-    synchronized public T get(int i) {
+    public synchronized T get(int i) {
         return list.get(start + i);
     }
 
-    synchronized public List<T> all() {
+    public synchronized List<T> all() {
         return new ArrayList<>(list.subList(start, list.size()));
     }
 
-    synchronized public Iterable<T> range(int from, int to) {
+    public synchronized Iterable<T> range(int from, int to) {
         return new ArrayList<>(list.subList(start + from, start + to));
     }
 
-    synchronized public int size() {
+    public synchronized int size() {
         return list.size() - start;
     }
 
     private boolean isOverflowing() {
-        return Integer.MAX_VALUE - LIMIT <= start;
+        return Integer.MAX_VALUE - limit <= start;
     }
 
-    synchronized private void toStart() {
-        list = new ArrayList<>(list.subList(start, start + LIMIT));
+    private synchronized void toStart() {
+        list = new ArrayList<>(list.subList(start, start + limit));
         start = 0;
     }
 }

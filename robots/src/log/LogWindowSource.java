@@ -3,17 +3,17 @@ package log;
 import robot.Observable;
 import robot.Observer;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class LogWindowSource implements Observable
 {
     private final LimitedList<LogEntry> messages;
-    private final ArrayList<Observer> listeners;
+    private final List<Observer> observers;
     
     public LogWindowSource(int iQueueLength) {
         messages = new LimitedList<>(iQueueLength);
-        listeners = new ArrayList<>();
+        observers = new CopyOnWriteArrayList<>();
     }
     
     public void append(LogLevel logLevel, String strMessage) {
@@ -34,21 +34,17 @@ public class LogWindowSource implements Observable
 
     @Override
     public void registerObserver(Observer observer) {
-        synchronized(listeners) {
-            listeners.add(observer);
-        }
+        observers.add(observer);
     }
 
     @Override
     public void unregisterObserver(Observer observer) {
-        synchronized(listeners) {
-            listeners.remove(observer);
-        }
+        observers.remove(observer);
     }
 
     @Override
     public void notifyObservers() {
-        for (Observer observer : listeners) {
+        for (Observer observer : observers) {
             observer.objectModified(this);
         }
     }

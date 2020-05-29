@@ -15,8 +15,8 @@ import store.WindowState;
 
 public class LogWindow extends JInternalFrame implements Observer, HasState {
     private LogWindowSource m_logSource;
-    private TextArea m_logContent;
-    public static final String WINDOW_NAME = "LogWindow";
+    private final TextArea m_logContent;
+    private static final String WINDOW_NAME = "LogWindow";
 
     public LogWindow(LogWindowSource logSource) 
     {

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * This class responsible for robot's movement logic.
@@ -26,7 +27,7 @@ public class Robot implements Observable {
     private static final double RADIUS = 100;
 
     public Robot(double robotPositionX, double robotPositionY, Target target) {
-        this.observers = new ArrayList<>();
+        this.observers = new CopyOnWriteArrayList<>();
         this.robotPositionX = robotPositionX;
         this.robotPositionY = robotPositionY;
         this.target = target;
@@ -148,9 +149,7 @@ public class Robot implements Observable {
 
     @Override
     public void unregisterObserver(Observer observer) {
-        synchronized (observers) {
-            observers.remove(observer);
-        }
+        observers.remove(observer);
     }
 
     @Override

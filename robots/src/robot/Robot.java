@@ -1,10 +1,13 @@
 package robot;
 
+import log.Logger;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * This class responsible for robot's movement logic.
@@ -24,7 +27,7 @@ public class Robot implements Observable {
     private static final double RADIUS = 100;
 
     public Robot(double robotPositionX, double robotPositionY, Target target) {
-        this.observers = new ArrayList<>();
+        this.observers = new CopyOnWriteArrayList<>();
         this.robotPositionX = robotPositionX;
         this.robotPositionY = robotPositionY;
         this.target = target;
@@ -53,6 +56,7 @@ public class Robot implements Observable {
     }
 
     public void updateTarget(Target target) {
+        Logger.debug("Target updated");
         this.target = target;
     }
 
@@ -61,6 +65,7 @@ public class Robot implements Observable {
         double distance = distance(robotPositionX, robotPositionY,
                 targetPosition.x, targetPosition.y);
         if (distance < 0.5) {
+            Logger.debug("Robot has done his work");
             return;
         }
         double angleToTarget = asNormalizedRadians(angleTo(
@@ -138,8 +143,13 @@ public class Robot implements Observable {
     }
 
     @Override
-    public synchronized void addObserver(Observer observer) {
+    public synchronized void registerObserver(Observer observer) {
         observers.add(observer);
+    }
+
+    @Override
+    public void unregisterObserver(Observer observer) {
+        observers.remove(observer);
     }
 
     @Override

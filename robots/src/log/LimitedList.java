@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class LimitedList<T> {
     private final int limit;
-    private volatile LinkedList<T> list;
+    private final LinkedList<T> list;
 
     public LimitedList(int limit) {
         if (limit <= 0) {

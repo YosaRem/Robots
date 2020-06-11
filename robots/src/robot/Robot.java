@@ -1,5 +1,6 @@
 package robot;
 
+import lacal.Localizator;
 import log.Logger;
 
 import java.awt.*;
@@ -56,7 +57,7 @@ public class Robot implements Observable {
     }
 
     public void updateTarget(Target target) {
-        Logger.debug("Target updated");
+        Logger.debug(Localizator.getLangBundle().getString("TargetSetup"));
         this.target = target;
     }
 
@@ -65,7 +66,7 @@ public class Robot implements Observable {
         double distance = distance(robotPositionX, robotPositionY,
                 targetPosition.x, targetPosition.y);
         if (distance < 0.5) {
-            Logger.debug("Robot has done his work");
+            Logger.debug(Localizator.getLangBundle().getString("RobotSuccess"));
             return;
         }
         double angleToTarget = asNormalizedRadians(angleTo(

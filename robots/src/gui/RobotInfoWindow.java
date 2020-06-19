@@ -1,5 +1,6 @@
 package gui;
 
+import lacal.Localizator;
 import robot.Observer;
 import robot.Robot;
 import store.HasState;
@@ -18,20 +19,20 @@ public class RobotInfoWindow extends JInternalFrame implements HasState, Observe
     private final JTextField infoField;
 
     public RobotInfoWindow() {
-        super("Окно информации о роботе", true, true, true, true);
+        super(Localizator.getLangBundle().getString("InfoWindowName"), true, true, true, true);
         setLocation(300, 100);
         setSize(new Dimension(300, 100));
         infoField = new JTextField();
         infoField.setEditable(false);
-        infoField.setText("x: 0\ny: 0");
         add(infoField);
     }
 
     private void printRobotStatus(Robot robot) {
         Point robotPosition = robot.getRobotPosition();
         infoField.setText(String.format(
-                "x: %d;  y: %d;  Направление: %f;",
+                "x: %d;  y: %d;  %s: %f;",
                 robotPosition.x, robotPosition.y,
+                Localizator.getLangBundle().getString("Destination"),
                 robot.getRobotDirection()
         ));
     }

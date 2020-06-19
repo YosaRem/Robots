@@ -1,5 +1,6 @@
 package gui;
 
+import lacal.Localizator;
 import store.HasState;
 import store.Restorer;
 import store.WindowState;
@@ -18,7 +19,7 @@ public class GameWindow extends JInternalFrame implements HasState {
 
     public GameWindow(Robot robot)
     {
-        super("Игровое поле", true, true, true, true);
+        super(Localizator.getLangBundle().getString("GameWindowName"), true, true, true, true);
         setLocation(300, 300);
         setPreferredSize(new Dimension(800, 500));
         Timer timer = new Timer("event generator", true);

@@ -11,6 +11,7 @@ import java.util.Map;
 
 import javax.swing.*;
 
+import lacal.Localizator;
 import log.Logger;
 import store.HaveStorableFrames;
 import store.PositionStore;
@@ -82,7 +83,6 @@ public class MainApplicationFrame extends JFrame implements HaveStorableFrames {
         LogWindow logWindow = new LogWindow(Logger.getDefaultLogSource());
         logWindow.setMinimumSize(logWindow.getSize());
         logWindow.pack();
-        Logger.debug("deb");
         Logger.debug("Протокол работает");
         return logWindow;
     }
@@ -106,6 +106,19 @@ public class MainApplicationFrame extends JFrame implements HaveStorableFrames {
             });
             optionMenu.add(exitItem);
         }
+
+        {
+            JMenuItem switchItem = new JMenuItem(Localizator.getLangBundle().getString("ChangeLocale"), KeyEvent.VK_C);
+            switchItem.addActionListener((event) -> {
+                JOptionPane.showMessageDialog(
+                        desktopPane,
+                        Localizator.getLangBundle().getString("ConfirmChanging")
+                );
+                Localizator.switchLocale();
+            });
+            optionMenu.add(switchItem);
+        }
+
         JMenu lookAndFeelMenu = new JMenu("Режим отображения");
         lookAndFeelMenu.setMnemonic(KeyEvent.VK_V);
         lookAndFeelMenu.getAccessibleContext().setAccessibleDescription(
